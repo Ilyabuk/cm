@@ -147,7 +147,7 @@ public class ReturnReport {
         row12.createCell(1).setCellValue("                          /                                   /            " + just_data);
         row13.createCell(0).setCellValue("Представитель компании");
         row13.createCell(1).setCellValue("                          /                                   /            " + just_data);
-        row14.createCell(0).setCellValue("Охрана");
+        row14.createCell(0).setCellValue("Охрана ");
         row14.createCell(1).setCellValue("                          /                                   /            " + just_data);
 
         row15.createCell(1).setCellValue("        Подпись                      ФИО                           Дата");
