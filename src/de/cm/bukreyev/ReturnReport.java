@@ -1,6 +1,6 @@
 package de.cm.bukreyev;
 
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HeaderFooter;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -15,12 +15,14 @@ import java.util.Date;
  * Created by bukreyev on 02.08.2017.
  */
 public class ReturnReport {
+    Date dataTime;
+
     private static int actID;
     private String data_time;
     private String just_data;
-    private String externalOrder, boxId, carrier, senderID,
-            boxConditionBase, boxConditionDetail, productData,
-            productCategory, productCondition;
+    private String externalOrder, carrier, senderID, productData, productCategory, productCondition;
+    private String storeNumber = "23";
+    private String storeAdress = "Г. Москва, улица пушкина дом Трампарампампам 123123 помещение кабинет";
 
     public static void main(String[] args) {
         ReturnReport report = new ReturnReport();
@@ -29,12 +31,12 @@ public class ReturnReport {
     }
 
     private void setCurrentDataTimeToString() {
-        Date dataTime = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        data_time = dateFormat.format(dataTime);
+        dataTime = new Date();
+        DateFormat longFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        data_time = longFormat.format(dataTime);
 
-        DateFormat dateFormat1 = new SimpleDateFormat("yyyy/MM/dd");
-        just_data = dateFormat1.format(dataTime);
+        DateFormat shortFormat = new SimpleDateFormat("yyyy/MM/dd");
+        just_data = shortFormat.format(dataTime);
     }
 
     ReturnReport() {
@@ -59,47 +61,46 @@ public class ReturnReport {
 
     private void borderCells(Sheet sheet) {
         PropertyTemplate pt = new PropertyTemplate();
-        pt.drawBorders(new CellRangeAddress(5, 10, 0, 1), BorderStyle.THIN, BorderExtent.INSIDE);
-        pt.drawBorders(new CellRangeAddress(5, 10, 0, 1), BorderStyle.THIN, BorderExtent.OUTSIDE);
+        pt.drawBorders(new CellRangeAddress(11, 13, 0, 1), BorderStyle.THIN, BorderExtent.INSIDE);
+        pt.drawBorders(new CellRangeAddress(11, 13, 0, 1), BorderStyle.THIN, BorderExtent.OUTSIDE);
 
-        pt.drawBorders(new CellRangeAddress(14, 16, 0, 1), BorderStyle.THIN, BorderExtent.INSIDE);
-        pt.drawBorders(new CellRangeAddress(14, 16, 0, 1), BorderStyle.THIN, BorderExtent.OUTSIDE);
+        pt.drawBorders(new CellRangeAddress(18, 20, 0, 1), BorderStyle.THIN, BorderExtent.INSIDE);
+        pt.drawBorders(new CellRangeAddress(18, 20, 0, 1), BorderStyle.THIN, BorderExtent.OUTSIDE);
 
-        pt.drawBorders(new CellRangeAddress(44, 44, 1, 1), BorderStyle.THIN, BorderExtent.BOTTOM);
-        pt.drawBorders(new CellRangeAddress(47, 47, 1, 1), BorderStyle.THIN, BorderExtent.BOTTOM);
-        pt.drawBorders(new CellRangeAddress(50, 50, 1, 1), BorderStyle.THIN, BorderExtent.BOTTOM);
+        pt.drawBorders(new CellRangeAddress(40, 40, 1, 1), BorderStyle.THIN, BorderExtent.BOTTOM);
+        pt.drawBorders(new CellRangeAddress(43, 43, 1, 1), BorderStyle.THIN, BorderExtent.BOTTOM);
+        pt.drawBorders(new CellRangeAddress(46, 46, 1, 1), BorderStyle.THIN, BorderExtent.BOTTOM);
         pt.applyBorders(sheet);
     }
 
     private void fillRows(Workbook wb, Sheet sheet) {
-        Row row = sheet.createRow(0);
-        Row row1 = sheet.createRow(3);
-        Row row2 = sheet.createRow(5);
-        Row row3 = sheet.createRow(6);
-        Row row4 = sheet.createRow(7);
-        Row row5 = sheet.createRow(8);
-        Row row6 = sheet.createRow(9);
-        Row row7 = sheet.createRow(10);
-        Row row8 = sheet.createRow(12);
-        Row row9 = sheet.createRow(14);
-        Row row10 = sheet.createRow(15);
-        Row row11 = sheet.createRow(16);
+        Row rowAct = sheet.createRow(7);
+        Row rowDataTime = sheet.createRow(1);
+        Row rowStoreAdr = sheet.createRow(1);
+        Row rowOrdId = sheet.createRow(11);
+        Row rowCarrier = sheet.createRow(12);
+        Row rowWayBill = sheet.createRow(13);
+        Row rowDetailCntr = sheet.createRow(16);
+        Row rowProdInfo = sheet.createRow(18);
+        Row rowProdCtgr = sheet.createRow(19);
+        Row rowProdCondtn = sheet.createRow(20);
 
-        Row row12 = sheet.createRow(44);
-        Row row13 = sheet.createRow(47);
-        Row row14 = sheet.createRow(50);
+        Row rowReceiver = sheet.createRow(40);
+        Row rowCompMan = sheet.createRow(43);
+        Row rowSecurMan = sheet.createRow(46);
 
-        Row row15 = sheet.createRow(45);
-        Row row16 = sheet.createRow(48);
-        Row row17 = sheet.createRow(51);
+        Row rowSign = sheet.createRow(41);
+        Row rowSign1 = sheet.createRow(44);
+        Row rowSign2 = sheet.createRow(47);
 
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
-        sheet.addMergedRegion(new CellRangeAddress(12, 12, 0, 1));
+        sheet.addMergedRegion(new CellRangeAddress(7, 7, 0, 1));
+        sheet.addMergedRegion(new CellRangeAddress(16, 16, 0, 1));
 
-        Cell cell0 = row.createCell(0);
-        Cell cell_1 = row1.createCell(1);
-        Cell cell2 = row8.createCell(0);
-        Cell cell_3 = row15.createCell(1);
+        Cell cellAct = rowAct.createCell(0);
+        Cell cellDetailCntr = rowDetailCntr.createCell(0);
+        Cell cellDataTime = rowDataTime.createCell(1);
+        Cell cellStoreAdr = rowStoreAdr.createCell(0);
+
 
         CellStyle cellStyleAligCentr = wb.createCellStyle();
         cellStyleAligCentr.setAlignment(HorizontalAlignment.CENTER);
@@ -107,58 +108,57 @@ public class ReturnReport {
         CellStyle cellStyleAligRigh = wb.createCellStyle();
         cellStyleAligRigh.setAlignment(HorizontalAlignment.RIGHT);
 
+        CellStyle cellStyleWrap = wb.createCellStyle();
+        cellStyleWrap.setWrapText(true);
+
         Font font = wb.createFont();
-        font.setFontHeight((short) 6);
+        font.setFontHeightInPoints((short) 6);
 
         CellStyle cellStyleSmallFont = wb.createCellStyle();
         cellStyleSmallFont.setFont(font);
 
-        cell0.setCellStyle(cellStyleAligCentr);
-        cell0.setCellValue(String.format("Акт осмотра № AI-%06d", actID++));
+        cellAct.setCellStyle(cellStyleAligCentr);
+        cellAct.setCellValue(String.format("Акт осмотра № AI-%06d", actID++));
 
-        cell2.setCellStyle(cellStyleAligCentr);
-        cell2.setCellValue("Детальный контроль");
+        cellDetailCntr.setCellStyle(cellStyleAligCentr);
+        cellDetailCntr.setCellValue("Детальный контроль");
 
-        row1.createCell(0).setCellValue(String.format("%s", "г. Москва"));
-        cell_1.setCellStyle(cellStyleAligRigh);
-        cell_1.setCellValue(String.format("%s", data_time));
+        cellStoreAdr.setCellValue(String.format
+                ("Филиал \"Медиа Маркт № %s\"\nООО \"Медиа Маркт Сатурн\n\"%s", storeNumber, storeAdress));
+        cellStoreAdr.setCellStyle(cellStyleWrap);
 
-        row2.createCell(0).setCellValue("Заказ №");
-        externalOrder = "testdatatestdatatestdatatestdata";
-        row2.createCell(1).setCellValue(externalOrder);
-        row3.createCell(0).setCellValue("Номер короба");
-        row3.createCell(1).setCellValue(boxId);
-        row4.createCell(0).setCellValue("Перевозчик");
-        row4.createCell(1).setCellValue(carrier);
-        row5.createCell(0).setCellValue("Номер отправления");
-        row5.createCell(1).setCellValue(senderID);
-        row6.createCell(0).setCellValue("Общее состояние упаковки");
-        row6.createCell(1).setCellValue(boxConditionBase);
-        row7.createCell(0).setCellValue("Детальное состояние упаковки");
-        row7.createCell(1).setCellValue(boxConditionDetail);
-        row9.createCell(0).setCellValue("Информация о товаре");
-        row9.createCell(1).setCellValue(productData);
-        row10.createCell(0).setCellValue("Категория товара");
-        row10.createCell(1).setCellValue(productCategory);
-        row11.createCell(0).setCellValue("Детальное состояние товара");
-        row11.createCell(1).setCellValue(productCondition);
+        cellDataTime.setCellValue(String.format("%s", data_time));
+        cellDataTime.setCellStyle(cellStyleAligRigh);
 
-        row12.createCell(0).setCellValue("Представитель получателя      М.П");
-        row12.createCell(1).setCellValue("                          /                                   /            " + just_data);
-        row13.createCell(0).setCellValue("Представитель компании");
-        row13.createCell(1).setCellValue("                          /                                   /            " + just_data);
-        row14.createCell(0).setCellValue("Охрана ");
-        row14.createCell(1).setCellValue("                          /                                   /            " + just_data);
+        rowOrdId.createCell(0).setCellValue("Заказ №");
+        rowOrdId.createCell(1).setCellValue(externalOrder);
+        rowCarrier.createCell(0).setCellValue("Перевозчик");
+        rowCarrier.createCell(1).setCellValue(carrier);
+        rowWayBill.createCell(0).setCellValue("Номер отправления");
+        rowWayBill.createCell(1).setCellValue(senderID);
+        rowProdInfo.createCell(0).setCellValue("Информация о товаре");
+        rowProdInfo.createCell(1).setCellValue(productData);
+        rowProdCtgr.createCell(0).setCellValue("Категория товара");
+        rowProdCtgr.createCell(1).setCellValue(productCategory);
+        rowProdCondtn.createCell(0).setCellValue("Состояние товара");
+        rowProdCondtn.createCell(1).setCellValue(productCondition);
 
-        row15.createCell(1).setCellValue("        Подпись                      ФИО                           Дата");
-        cell_3.setCellStyle(cellStyleSmallFont);
-        row16.createCell(1).setCellValue("        Подпись                      ФИО                           Дата");
-        row17.createCell(1).setCellValue("        Подпись                      ФИО                           Дата");
+        rowReceiver.createCell(0).setCellValue("Представитель получателя      М.П");
+        rowReceiver.createCell(1).setCellValue("                          /                                   /            " + just_data);
+        rowCompMan.createCell(0).setCellValue("Представитель компании");
+        rowCompMan.createCell(1).setCellValue("                          /                                   /            " + just_data);
+        rowSecurMan.createCell(0).setCellValue("Охрана ");
+        rowSecurMan.createCell(1).setCellValue("                          /                                   /            " + just_data);
+
+        rowSign.createCell(1).setCellValue("        Подпись                      ФИО                           Дата");
+        rowSign1.createCell(1).setCellValue("        Подпись                      ФИО                           Дата");
+        rowSign2.createCell(1).setCellValue("        Подпись                      ФИО                           Дата");
+//        cell_3.setCellStyle(cellStyleSmallFont);
 
         Footer footer = sheet.getFooter();
-        footer.setRight("Page "+ org.apache.poi.hssf.usermodel.HeaderFooter.page() + " of "+ HeaderFooter.numPages());
+        footer.setRight("Page " + org.apache.poi.hssf.usermodel.HeaderFooter.page() + " of " + HeaderFooter.numPages());
 
-        sheet.autoSizeColumn(0);
+        sheet.setColumnWidth(0, 8000);
         sheet.setColumnWidth(1, 14000);
     }
 }
